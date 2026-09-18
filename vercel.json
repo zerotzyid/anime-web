@@ -9,28 +9,7 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/server.js"
-    },
-    {
-      "src": "/docs/swagger.json",
-      "dest": "/public/swagger.json"
-    },
-    {
-      "src": "/docs/swagger-ui",
-      "dest": "/public/swagger-ui.html"
-    },
-    {
-      "src": "/dashboard",
-      "dest": "/public/dashboard.html"
-    },
-    {
-      "src": "/css/(.*)",
-      "dest": "/public/css/$1"
-    },
-    {
-      "src": "/js/(.*)",
-      "dest": "/public/js/$1"
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
