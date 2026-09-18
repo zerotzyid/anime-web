@@ -1,0 +1,207 @@
+# NIME Anime Streaming API Documentation
+
+Base URL: `http://165.245.176.46:3474`
+
+## Endpoints
+
+### GET /api/home?page=1
+Get homepage anime list.
+
+**Query Params:**
+- `page` (integer, optional) — Page number, default 1
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "anime": [...],
+    "page": 1,
+    "totalPages": 10
+  }
+}
+```
+
+### GET /api/search?q=flcl
+Search anime by keyword.
+
+**Query Params:**
+- `q` (string, required) — Search keyword
+- `page` (integer, optional) — Page number, default 1
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "results": [...],
+    "page": 1,
+    "totalPages": 5
+  }
+}
+```
+
+### GET /api/genre
+Get list of genres.
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "genres": ["Action", "Comedy", "Drama", ...]
+  }
+}
+```
+
+### GET /api/latest?page=1
+Get latest anime episodes.
+
+**Query Params:**
+- `page` (integer, optional) — Page number, default 1
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "anime": [...],
+    "page": 1,
+    "totalPages": 10
+  }
+}
+```
+
+### GET /api/anime/:slug
+Get anime detail by slug.
+
+**Path Params:**
+- `slug` (string, required) — Anime slug (e.g., `flcl-sub-indo`)
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "slug": "flcl-sub-indo",
+    "title": "FLCL BD Sub Indo",
+    "thumbnail": "https://...",
+    "synopsis": "...",
+    "episodes": [1, 2, 3, 4, 5, 6],
+    "servers": []
+  }
+}
+```
+
+### GET /api/anime/:slug/streams?episode=1
+Get video streams for an episode.
+
+**Path Params:**
+- `slug` (string, required) — Anime slug
+
+**Query Params:**
+- `episode` (integer, required) — Episode number
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "servers": [
+      { "server": "360p", "url": "https://dl.berkasdrive.com/..." },
+      { "server": "480p", "url": "https://dl.berkasdrive.com/..." },
+      { "server": "720p", "url": "https://dl.berkasdrive.com/..." }
+    ],
+    "episode": 1,
+    "slug": "flcl-sub-indo"
+  }
+}
+```
+
+### GET /api/extract?url=...
+Extract direct MP4 URL from server URL.
+
+**Query Params:**
+- `url` (string, required) — Server URL from streams endpoint
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "url": "https://direct-stor.berkasdrive.com/stream/...",
+    "type": "video/mp4"
+  }
+}
+```
+
+### GET /api/proxy-video?url=...
+Proxy video stream to bypass CORS. Use this URL as `video.src` in Flutter.
+
+**Query Params:**
+- `url` (string, required) — Direct MP4 URL from extract endpoint
+
+**Response:** Video stream (HTTP 200 with video/mp4 content-type)
+
+## Flutter Integration
+
+### 1. Fetch Anime List
+```dart
+final response = await http.get(Uri.parse('http://<VPS_IP>:3474/api/home?page=1'));
+final data = jsonDecode(response.body);
+final animeList = data['data']['anime'] as List;
+```
+
+### 2. Search Anime
+```dart
+final response = await http.get(Uri.parse('http://<VPS_IP>:3474/api/search?q=flcl'));
+final data = jsonDecode(response.body);
+final results = data['data']['results'] as List;
+```
+
+### 3. Get Anime Detail
+```dart
+final response = await http.get(Uri.parse('http://<VPS_IP>:3474/api/anime/flcl-sub-indo'));
+final data = jsonDecode(response.body);
+final title = data['data']['title'];
+final episodes = List<int>.from(data['data']['episodes']);
+```
+
+### 4. Get Video Stream
+```dart
+final response = await http.get(Uri.parse('http://<VPS_IP>:3474/api/anime/flcl-sub-indo/streams?episode=1'));
+final data = jsonDecode(response.body);
+final servers = List<Map>.from(data['data']['servers']);
+final videoUrl = servers.first['url']; // dl.berkasdrive.com URL
+```
+
+### 5. Extract Direct MP4 URL
+```dart
+final response = await http.get(Uri.parse('http://<VPS_IP>:3474/api/extract?url=$videoUrl'));
+final data = jsonDecode(response.body);
+final directUrl = data['data']['url']; // direct MP4 URL
+```
+
+### 6. Play Video in Flutter
+```dart
+// Use video_player or chewie package
+// Set videoUrl from extract endpoint as video source
+// Or use proxy-video endpoint directly:
+videoPlayerController = VideoPlayerController.network(
+  'http://<VPS_IP>:3474/api/proxy-video?url=$directUrl',
+);
+```
+
+## Error Responses
+```json
+{
+  "success": false,
+  "message": "Error description"
+}
+```
+
+## Notes
+- All endpoints return JSON except `/api/proxy-video` which returns video stream
+- Rate limiting: 15000ms timeout per request
+- CORS: Use `/api/proxy-video` to bypass CORS for video streaming
+- Default video quality: 360p (first server in list)

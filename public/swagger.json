@@ -1,0 +1,120 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "NIME Anime Streaming API",
+    "description": "REST API for NIME anime streaming application. Supports Flutter integration.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://165.245.176.46:3474",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/api/home": {
+      "get": {
+        "summary": "Get homepage anime list",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/search": {
+      "get": {
+        "summary": "Search anime",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful response" }
+        }
+      }
+    },
+    "/api/anime/{slug}": {
+      "get": {
+        "summary": "Get anime detail",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful response" }
+        }
+      }
+    },
+    "/api/anime/{slug}/streams": {
+      "get": {
+        "summary": "Get video streams",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "episode",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful response" }
+        }
+      }
+    },
+    "/api/extract": {
+      "get": {
+        "summary": "Extract direct MP4 URL",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful response" }
+        }
+      }
+    },
+    "/api/proxy-video": {
+      "get": {
+        "summary": "Proxy video stream",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful response" }
+        }
+      }
+    }
+  }
+}

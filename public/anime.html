@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime — NIME</title>
+  <meta name="description" content="Detail anime">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">NIME</a>
+      <button class="hamburger" aria-label="Buka menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="/" data-nav>Home</a></li>
+        <li><a href="/latest" data-nav>Terbaru</a></li>
+        <li><a href="/genre" data-nav>Genre</a></li>
+        <li>
+          <form class="search-form" action="/search" data-search-form>
+            <input type="search" name="q" placeholder="Cari anime..." autocomplete="off" aria-label="Cari anime">
+          </form>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <div class="container">
+      <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb"></nav>
+      <div id="anime-detail" class="anime-detail hidden">
+        <div class="anime-detail-hero">
+          <img id="detail-poster" class="anime-detail-poster" src="" alt="" loading="lazy">
+          <div class="anime-detail-info">
+            <h1 id="detail-title"></h1>
+            <p id="detail-alt-title" class="text-muted"></p>
+            <div id="detail-meta" class="detail-meta"></div>
+            <p id="detail-synopsis" class="synopsis"></p>
+          </div>
+        </div>
+        <h2>Episode</h2>
+        <div id="episode-list" class="episode-grid"></div>
+      </div>
+      <div id="error-block" class="error-block hidden">
+        <p>Gagal mengambil data anime.</p>
+        <button onclick="location.reload()">Coba Lagi</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>NIME — Anime Streaming</p>
+  </footer>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/anime.js"></script>
+</body>
+</html>

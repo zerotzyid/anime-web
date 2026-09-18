@@ -1,0 +1,21 @@
+{
+  "name": "nime-anime-streaming",
+  "version": "1.0.0",
+  "description": "NIME Anime Streaming API - Express.js + Node.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "echo 'No build step needed for Express static server'"
+  },
+  "keywords": ["anime", "streaming", "api", "express", "nodejs"],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

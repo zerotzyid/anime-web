@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Dashboard — NIME</title>
+  <meta name="description" content="NIME Anime Streaming API Dashboard">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .dashboard { max-width: 1280px; margin: 0 auto; padding: 24px 16px; }
+    .dashboard h1 { font-size: 1.5rem; margin-bottom: 24px; color: var(--accent); }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+    .stat-card .stat-value { font-size: 2rem; font-weight: 700; color: var(--accent); }
+    .stat-card .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+    .section { margin-bottom: 32px; }
+    .section h2 { font-size: 1.1rem; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+    .anime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+    .anime-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color .2s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+    .anime-card:hover { border-color: var(--accent); }
+    .anime-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; background: var(--surface2); }
+    .anime-card .card-body { padding: 8px 10px; }
+    .anime-card .card-title { font-size: 0.85rem; font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .anime-card .card-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .api-endpoint { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; margin-bottom: 8px; font-family: monospace; font-size: 0.8rem; color: var(--accent); }
+    .api-endpoint .method { display: inline-block; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; margin-right: 8px; }
+    .method-get { background: #28a745; color: #fff; }
+    .status-ok { color: #28a745; }
+    .status-error { color: #dc3545; }
+    .hidden { display: none !important; }
+    .text-muted { color: var(--text-muted); }
+    .footer { margin-top: auto; text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+    .spinner { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid #fff; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">NIME</a>
+      <ul class="nav-links">
+        <li><a href="/" data-nav>Home</a></li>
+        <li><a href="/docs-api.html" data-nav>API Docs</a></li>
+        <li><a href="/dashboard.html" data-nav>Dashboard</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <div class="dashboard">
+      <h1>📊 API Dashboard</h1>
+
+      <!-- Stats -->
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-total-anime">-</div>
+          <div class="stat-label">Total Anime</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-total-episodes">-</div>
+          <div class="stat-label">Total Episodes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-status">-</div>
+          <div class="stat-label">Server Status</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-uptime">-</div>
+          <div class="stat-label">Uptime</div>
+        </div>
+      </div>
+
+      <!-- API Endpoints -->
+      <div class="section">
+        <h2>🔌 API Endpoints</h2>
+        <div id="endpoint-list">
+          <div class="api-endpoint"><span class="method method-get">GET</span> /api/home?page=1 <span class="text-muted">— Home anime list</span></div>
+          <div class="api-endpoint"><span class="method method-get">GET</span> /api/search?q=flcl <span class="text-muted">— Search anime</span></div>
+          <div class="api-endpoint"><span class="method method-get">GET</span> /api/genre <span class="text-muted">— Genre list</span></div>
+          <div class="api-endpoint"><span class="method method-get">GET</span> /api/latest?page=1 <span class="text-muted">— Latest episodes</span></div>
+          <div class="api-endpoint"><span class="method method-get">GET</span> /api/anime/:slug <span class="text-muted">— Anime detail</span></div>
+          <div class="api-endpoint"><span class="method method-get">GET</span> /api/anime/:slug/streams?episode=1 <span class="text-muted">— Video streams</span></div>
+          <div class="api-endpoint"><span class="method method-get">GET</span> /api/extract?url=... <span class="text-muted">— Extract MP4 URL</span></div>
+          <div class="api-endpoint"><span class="method method-get">GET</span> /api/proxy-video?url=... <span class="text-muted">— Proxy video stream</span></div>
+        </div>
+      </div>
+
+      <!-- Latest Anime -->
+      <div class="section">
+        <h2>🎬 Latest Anime</h2>
+        <div id="anime-grid" class="anime-grid">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <!-- Server Info -->
+      <div class="section">
+        <h2>🖥️ Server Info</h2>
+        <div id="server-info" class="stat-card">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>NIME — Anime Streaming API Dashboard</p>
+  </footer>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

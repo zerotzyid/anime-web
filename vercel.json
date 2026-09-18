@@ -1,0 +1,52 @@
+{
+  "version": 2,
+  "name": "nime-anime-streaming",
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/swagger.json",
+      "dest": "/api/swagger.json"
+    },
+    {
+      "src": "/docs/swagger-ui",
+      "dest": "/api/swagger-ui"
+    },
+    {
+      "src": "/docs/swagger-ui/(.*)",
+      "dest": "/api/swagger-ui/$1"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/api/dashboard"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/css/(.*)",
+      "dest": "/public/css/$1"
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "/public/js/$1"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/public/images/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/server.js"
+    }
+  ],
+  "env": {
+    "PORT": "3474",
+    "API_BASE_URL": "https://nime-ku-nu.vercel.app"
+  }
+}
