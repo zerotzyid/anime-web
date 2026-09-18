@@ -1,4 +1,4 @@
-require('dotenv').config();
+const config = require('../config');
 const express = require('express');
 const path = require('path');
 const apiRoutes = require('./src/routes/api');
