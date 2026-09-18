@@ -1,7 +1,6 @@
-const config = require('../config');
+const config = require('./config'); // Menggunakan config dari root
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
 const apiRoutes = require('./src/routes/api');
 const swaggerRoutes = require('./src/routes/swagger');
 const dashboardRoutes = require('./src/routes/dashboard');
@@ -29,27 +28,8 @@ app.use('/docs', swaggerRoutes);
 // Dashboard routes
 app.use('/dashboard', dashboardRoutes);
 
-// Static frontend
+// Static frontend dari direktori public
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Make API_BASE_URL available client-side
-app.get('*.html', (req, res, next) => {
-  const filePath = path.join(__dirname, 'public', req.path);
-  res.sendFile(filePath, (err) => {
-    if (err) return next(err);
-    if (req.path === '/swagger-ui.html' || req.path === '/dashboard.html') {
-      const fileContent = fs.readFileSync(filePath, 'utf8');
-      const modifiedContent = fileContent.replace(
-        '</head>',
-        `<script>window.API_BASE_URL = \'${config.API_BASE_URL}\';</script></head>`
-      );
-      res.send(modifiedContent);
-    } else {
-      res.sendFile(filePath);
-    }
-  });
-});
-
 
 // SPA fallback — serve index.html for unknown routes (search, genre detail, etc.)
 app.get('*', (req, res) => {

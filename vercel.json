@@ -9,32 +9,36 @@
   ],
   "routes": [
     {
-      "src": "/swagger.json",
+      "src": "/docs/swagger.json",
       "dest": "/api/swagger.json"
     },
     {
       "src": "/docs/swagger-ui",
-      "dest": "/api/swagger-ui"
+      "dest": "/docs/swagger-ui.html"
     },
     {
       "src": "/docs/swagger-ui/(.*)",
-      "dest": "/api/swagger-ui/$1"
+      "dest": "/docs/swagger-ui/$1"
     },
     {
       "src": "/dashboard",
-      "dest": "/api/dashboard"
+      "dest": "/dashboard/dashboard.html"
     },
     {
       "src": "/api/(.*)",
       "dest": "/api/$1"
     },
     {
-      "src": "/css/(.*)",
-      "dest": "/public/css/$1"
+      "src": "/(.*.js)",
+      "dest": "/public/$1"
     },
     {
-      "src": "/js/(.*)",
-      "dest": "/public/js/$1"
+      "src": "/(.*.css)",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/(.*.html)",
+      "dest": "/public/$1"
     },
     {
       "src": "/images/(.*)",
@@ -47,6 +51,6 @@
   ],
   "env": {
     "PORT": "3474",
-    "API_BASE_URL": "https://nime-ku-nu.vercel.app"
+    "API_BASE_URL": "https://nime-anime-streaming.vercel.app"
   }
 }
