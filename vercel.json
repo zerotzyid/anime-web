@@ -38,6 +38,6 @@
     }
   ],
   "env": {
-    "API_BASE_URL": "https://nime-anime-streaming.vercel.app"
+    "API_BASE_URL": "https://nime-ku-nu.vercel.app"
   }
 }
