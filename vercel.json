@@ -9,8 +9,12 @@
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
       "src": "/docs/swagger.json",
-      "dest": "/api/swagger.json"
+      "dest": "/docs/swagger.json"
     },
     {
       "src": "/docs/swagger-ui",
@@ -25,8 +29,8 @@
       "dest": "/dashboard/dashboard.html"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "src": "/dashboard/(.*)",
+      "dest": "/dashboard/$1"
     },
     {
       "src": "/(.*)",

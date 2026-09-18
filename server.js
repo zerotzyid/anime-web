@@ -1,6 +1,7 @@
 const config = require('./config'); // Menggunakan config dari root
 const express = require('express');
 const path = require('path');
+// const fs = require('fs'); // fs tidak lagi dibutuhkan di serverless
 const apiRoutes = require('./src/routes/api');
 const swaggerRoutes = require('./src/routes/swagger');
 const dashboardRoutes = require('./src/routes/dashboard');
@@ -29,19 +30,19 @@ app.use('/docs', swaggerRoutes);
 app.use('/dashboard', dashboardRoutes);
 
 // Static frontend dari direktori public
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(process.cwd(), 'public'))); // Menggunakan process.cwd() untuk path yang lebih stabil di Vercel
 
-// SPA fallback — serve index.html for unknown routes (search, genre detail, etc.)
+// SPA fallback — serve index.html untuk rute yang tidak cocok (search, detail, dll.)
 app.get('*', (req, res) => {
   // Watch page needs special handling
   if (req.path.startsWith('/watch/')) {
-    return res.sendFile(path.join(__dirname, 'public', 'watch.html'));
+    return res.sendFile(path.join(process.cwd(), 'public', 'watch.html'));
   }
   // Anime detail page
   if (req.path.startsWith('/anime/')) {
-    return res.sendFile(path.join(__dirname, 'public', 'anime.html'));
+    return res.sendFile(path.join(process.cwd(), 'public', 'anime.html'));
   }
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
 });
 
 // Error handler
