@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://165.245.176.46:3474",
+      "url": "https://nime-anime-streaming.vercel.app",
       "description": "Production server"
     }
   ],
