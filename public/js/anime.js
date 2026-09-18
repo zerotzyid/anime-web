@@ -25,7 +25,7 @@ async function loadHomePage() {
   // Hero + Latest
   try {
     const home = await apiFetch('/api/home?page=1');
-    const items = home.data || [];
+    const items = home.data.anime || [];
     if (items.length) {
       const featured = items[0];
       hero.innerHTML = `
